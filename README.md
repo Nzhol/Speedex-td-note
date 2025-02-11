@@ -72,7 +72,7 @@ les
 commandes associées à un client à partir de son adresse email pour répondre plus
 rapidement aux demandes de suivi.
 
-## US-04 - Vérifier que le poids total des produits d’une commande est inférieur à 30 kg ⚖️
+## ~~US-04 - Vérifier que le poids total des produits d’une commande est inférieur à 30 kg ⚖️~~
 
 En tant que **responsable entrepôt**, je veux m'assurer que chaque colis ne
 dépasse

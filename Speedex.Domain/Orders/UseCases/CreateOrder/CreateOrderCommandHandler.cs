@@ -48,17 +48,26 @@ public class CreateOrderCommandHandler : ICommandHandler<CreateOrderCommand, Cre
 
         foreach (var p in command.Products)
         {
-            Product prod = (await productRepository.GetProductById(p.ProductId, cancellationToken))!;
-            if ((prod.Weight.Value > 30.0 && prod.Weight.Unit == WeightUnit.Kg) ||
-                (prod.Weight.Value > 30_000.0 && prod.Weight.Unit == WeightUnit.Gr) ||
-                (prod.Weight.Value > 30_000_000.0 && prod.Weight.Unit == WeightUnit.Mg))
+            Product prod = (await productRepository.GetProductById(p.ProductId, CancellationToken.None))!;
+            
+            if (prod.Weight.ToKilograms().Value>30.0 || totalWeight >30)
             {
                 return new CreateOrderResult
                 {
-                    Success = false
+                    Success = false,
+                    Errors = [
+                        new CreateOrderResult.ValidationError
+                        {
+                            Message="Command weight is more than 30kg",
+                            Code="Command_WeightExceeded_Error"
+                        }
+                    
+                    
+                    ]
                 };
             }
 
+            totalWeight += prod.Weight.ToKilograms().Value;
 
         }
 
@@ -74,7 +83,7 @@ public class CreateOrderCommandHandler : ICommandHandler<CreateOrderCommand, Cre
             };
         }
 
-        ;
+        
 
 
 
